@@ -1,0 +1,4 @@
+Cisco IOS Software, vios-ADVENTERPRISEK9-M, Version 15.2(CML_NIGHTLY_20190423)
+ROM: Bootstrap program is IOSv
+R-SUC-01 uptime is 3 hours, 12 minutes
+System image file is "flash0:/vios-ADVENTERPRISEK9-M"

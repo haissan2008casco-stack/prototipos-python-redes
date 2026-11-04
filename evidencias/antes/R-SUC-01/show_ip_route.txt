@@ -1,0 +1,9 @@
+Codes: C - connected, S - static, * - candidate default
+Gateway of last resort is 192.168.122.1 to network 0.0.0.0
+
+S*    0.0.0.0/0 is directly connected, GigabitEthernet0/1
+      192.168.10.0/24 is variably subnetted, 2 subnets, 2 masks
+C        192.168.10.0/24 is directly connected, GigabitEthernet0/0.10
+L        192.168.10.1/32 is directly connected, GigabitEthernet0/0.10
+C     192.168.20.0/24 is directly connected, GigabitEthernet0/0.20
+C     192.168.99.0/24 is directly connected, GigabitEthernet0/0.99

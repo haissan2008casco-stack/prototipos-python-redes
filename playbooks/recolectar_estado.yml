@@ -1,0 +1,55 @@
+---
+# Obtiene evidencias de solo lectura y las guarda en evidencias/<fase>/<equipo>/
+# Uso: ansible-playbook -i inventory/hosts.yml playbooks/recolectar_estado.yml -e fase=antes
+- name: Recolectar evidencias de los switches
+  hosts: switches
+  gather_facts: false
+  vars:
+    fase: antes
+    comandos:
+      show_running_config: show running-config
+      show_version: show version
+      show_vlan_brief: show vlan brief
+      show_interfaces_trunk: show interfaces trunk
+      show_ip_interface_brief: show ip interface brief
+  tasks:
+    - name: Ejecutar cada comando de consulta
+      cisco.ios.ios_command:
+        commands: "{{ item.value }}"
+      register: salida
+      loop: "{{ comandos | dict2items }}"
+      loop_control: { label: "{{ item.key }}" }
+
+    - name: Guardar la salida como evidencia en el repositorio
+      ansible.builtin.copy:
+        content: "{{ item.stdout[0] }}\n"
+        dest: "{{ playbook_dir }}/../evidencias/{{ fase }}/{{ inventory_hostname }}/{{ item.item.key }}.txt"
+      delegate_to: localhost
+      loop: "{{ salida.results }}"
+      loop_control: { label: "{{ item.item.key }}" }
+
+- name: Recolectar evidencias del router
+  hosts: routers
+  gather_facts: false
+  vars:
+    fase: antes
+    comandos:
+      show_running_config: show running-config
+      show_version: show version
+      show_ip_interface_brief: show ip interface brief
+      show_ip_route: show ip route
+  tasks:
+    - name: Ejecutar cada comando de consulta
+      cisco.ios.ios_command:
+        commands: "{{ item.value }}"
+      register: salida
+      loop: "{{ comandos | dict2items }}"
+      loop_control: { label: "{{ item.key }}" }
+
+    - name: Guardar la salida como evidencia en el repositorio
+      ansible.builtin.copy:
+        content: "{{ item.stdout[0] }}\n"
+        dest: "{{ playbook_dir }}/../evidencias/{{ fase }}/{{ inventory_hostname }}/{{ item.item.key }}.txt"
+      delegate_to: localhost
+      loop: "{{ salida.results }}"
+      loop_control: { label: "{{ item.item.key }}" }

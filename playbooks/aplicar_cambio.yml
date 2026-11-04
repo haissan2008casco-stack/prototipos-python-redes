@@ -1,0 +1,19 @@
+---
+# Cambio aprobado y no disruptivo: actualiza la descripcion de UN puerto de acceso.
+# El detalle del cambio vive en datos/cambio_aprobado.yml (no en el playbook).
+- name: Aplicar cambio aprobado RFC-SUC01-001
+  hosts: SW-SUC-01-CORE
+  gather_facts: false
+  vars_files:
+    - ../datos/cambio_aprobado.yml
+  tasks:
+    - name: Actualizar descripcion del puerto
+      cisco.ios.ios_interfaces:
+        config:
+          - name: "{{ cambio.interfaz }}"
+            description: "{{ cambio.descripcion_nueva }}"
+        state: merged
+
+    - name: Guardar configuracion en NVRAM solo si hubo cambios
+      cisco.ios.ios_config:
+        save_when: modified

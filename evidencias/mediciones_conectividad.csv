@@ -1,0 +1,4 @@
+fecha,destino,ip,enviados,recibidos,perdida_pct,lat_min_ms,lat_prom_ms,lat_max_ms,clasificacion
+2026-11-04 15:25:25,R-SUC-01,192.168.99.1,10,10,0.0,1.68,2.1,3.99,CUMPLE
+2026-11-04 15:25:25,SW-SUC-01-CORE,192.168.99.2,10,10,0.0,3.84,4.8,9.12,CUMPLE
+2026-11-04 15:25:25,SW-SUC-01-ACC1,192.168.99.3,10,10,0.0,7.68,9.6,18.24,CUMPLE

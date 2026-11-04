@@ -1,0 +1,1 @@
+Estas son las 12 capturas originales aportadas para documentar la actividad. Se conservan sin alterar. Los scripts del repositorio son una versión organizada y ampliada; consulte README.md y documentacion/ESTADO_Y_LIMITACIONES.md para conocer su alcance.

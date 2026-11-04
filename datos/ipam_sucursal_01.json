@@ -1,0 +1,13 @@
+{
+  "fuente": "IPAM-SIMULADO",
+  "sitio": "SUCURSAL-01",
+  "vlans": [
+    {"id": 10, "nombre": "USUARIOS_VLAN10", "red": "192.168.10.0/24", "gateway": "192.168.10.1"},
+    {"id": 20, "nombre": "USUARIOS_VLAN20", "red": "192.168.20.0/24", "gateway": "192.168.20.254"},
+    {"id": 99, "nombre": "GESTION",         "red": "192.168.99.0/24", "gateway": "192.168.99.1"}
+  ],
+  "equipos": [
+    {"nombre": "SW-SUC-01-CORE", "funcion": "switch-core",   "gestion": "192.168.99.2"},
+    {"nombre": "SW-SUC-01-ACC1", "funcion": "switch-acceso", "gestion": "192.168.99.30"}
+  ]
+}

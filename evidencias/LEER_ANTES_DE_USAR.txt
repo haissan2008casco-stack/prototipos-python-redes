@@ -1,0 +1,1 @@
+ATENCION: los archivos de evidencias/antes, evidencias/despues y evidencias/prueba_negativa incluidos en este paquete son fixtures de ejemplo provenientes del material de referencia. No son capturas ni respaldos generados desde un laboratorio propio de Haissan. Sustituirlos por salidas Ansible reales si la entrega exige evidencia de laboratorio.

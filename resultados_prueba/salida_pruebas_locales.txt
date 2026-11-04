@@ -1,0 +1,158 @@
+PRUEBAS LOCALES CON ARCHIVOS DE EVIDENCIA DE EJEMPLO
+Fecha del entorno: 2026-11-04
+Nota: no se ejecutó GNS3 ni se contactaron dispositivos.
+
+$ python3 -m py_compile python/*.py
+[codigo de salida: 0]
+
+$ python3 python/validar_cambio.py
+==========================================================================
+VALIDACION ANTES/DESPUES - RFC-SUC01-001
+==========================================================================
+Leyo evidencias : evidencias/antes/  y  evidencias/despues/
+Cambio esperado : SW-SUC-01-CORE GigabitEthernet0/1 -> descripcion "Acceso VLAN 10 - PC1 (usuarios administrativos)"
+
+[1] CAMBIO SOLICITADO
+    antes   : Acceso VLAN 10 - PC1
+    despues : Acceso VLAN 10 - PC1 (usuarios administrativos)
+    Resultado: CAMBIO APLICADO CORRECTAMENTE
+
+[2] ELEMENTOS CRITICOS
+    [OK]   R-SUC-01: rutas necesarias (4 rutas)                sin cambios
+    [OK]   R-SUC-01: direcciones de gateway/gestion            sin cambios
+    [OK]   R-SUC-01: resto de running-config                   sin cambios
+    [OK]   SW-SUC-01-CORE: VLAN 10 (nombre/estado/puertos)     sin cambios
+    [OK]   SW-SUC-01-CORE: VLAN 20 (nombre/estado/puertos)     sin cambios
+    [OK]   SW-SUC-01-CORE: VLAN 99 (nombre/estado/puertos)     sin cambios
+    [OK]   SW-SUC-01-CORE: enlaces troncales (Gi0/0, Gi1/2)    sin cambios
+    [OK]   SW-SUC-01-CORE: interfaz de gestion Vlan99          sin cambios
+    [OK]   SW-SUC-01-CORE: resto de running-config             sin cambios
+    [OK]   SW-SUC-01-ACC1: VLAN 10 (nombre/estado/puertos)     sin cambios
+    [OK]   SW-SUC-01-ACC1: VLAN 20 (nombre/estado/puertos)     sin cambios
+    [OK]   SW-SUC-01-ACC1: VLAN 99 (nombre/estado/puertos)     sin cambios
+    [OK]   SW-SUC-01-ACC1: enlaces troncales (Gi0/0)           sin cambios
+    [OK]   SW-SUC-01-ACC1: interfaz de gestion Vlan99          sin cambios
+    [OK]   SW-SUC-01-ACC1: resto de running-config             sin cambios
+
+--------------------------------------------------------------------------
+RESULTADO FINAL: cambio aplicado correctamente; elementos criticos sin cambios.
+[codigo de salida: 0]
+
+$ python3 python/generar_sucursal_02.py
+==============================================================================
+PLAN DE DIRECCIONAMIENTO - SUCURSAL-02
+==============================================================================
+Leyo: datos/sucursal_02_entrada.yml | Bloque disponible: 10.20.0.0/23 (512 direcciones)
+Condicion: cada VLAN necesita hosts + red + broadcast + gateway, sin solapamiento
+
+VLAN NOMBRE          RED             MASCARA          GATEWAY     PREVISTOS UTILIZABLES
+10   ADMINISTRACION  10.20.0.0/26    255.255.255.192  10.20.0.1   50        62
+20   OPERACION       10.20.0.64/27   255.255.255.224  10.20.0.65  25        30
+99   GESTION         10.20.0.96/28   255.255.255.240  10.20.0.97  10        14
+
+Direcciones usadas: 112 de 512; libres: 400
+Solapamiento: NO se detecto. Todas las subredes caben dentro del bloque.
+Resultado: archivo variables/sucursal_02_generada.yml creado (no se configuro ningun equipo).
+[codigo de salida: 0]
+
+$ python3 python/auditar_flota.py
+====================================================================================================
+AUDITORIA DE FLOTA PEQUENA (muestra de 3 equipos)
+====================================================================================================
+Leyo: variables/sucursal_01.yml + evidencias/antes/<equipo>/*.txt (obtenidas con Ansible)
+
+EQUIPO          CONDICION EVALUADA                                  RESULTADO  DETALLE
+R-SUC-01        hostname coincide con inventario                    CUMPLE     
+R-SUC-01        version IOS identificada                            CUMPLE     
+R-SUC-01        service password-encryption activo                  CUMPLE     
+R-SUC-01        enable secret (no password en claro)                CUMPLE     
+R-SUC-01        SSH version 2 habilitado                            CUMPLE     
+R-SUC-01        VTY solo SSH (sin telnet)                           CUMPLE     
+R-SUC-01        gateway VLAN 10 = 192.168.10.1                      CUMPLE     
+R-SUC-01        gateway VLAN 20 = 192.168.20.1                      CUMPLE     
+R-SUC-01        gateway VLAN 99 = 192.168.99.1                      CUMPLE     
+R-SUC-01        subinterfaces .10/.20/.99 up/up                     CUMPLE     
+SW-SUC-01-CORE  hostname coincide con inventario                    CUMPLE     
+SW-SUC-01-CORE  version IOS identificada                            CUMPLE     
+SW-SUC-01-CORE  service password-encryption activo                  CUMPLE     
+SW-SUC-01-CORE  enable secret (no password en claro)                CUMPLE     
+SW-SUC-01-CORE  SSH version 2 habilitado                            CUMPLE     
+SW-SUC-01-CORE  VTY solo SSH (sin telnet)                           CUMPLE     
+SW-SUC-01-CORE  VLAN 10 USUARIOS_VLAN10 activa                      CUMPLE     
+SW-SUC-01-CORE  VLAN 20 USUARIOS_VLAN20 activa                      CUMPLE     
+SW-SUC-01-CORE  VLAN 99 GESTION activa                              CUMPLE     
+SW-SUC-01-CORE  troncales: nativa 99 y VLAN 10,20,99 permitidas     CUMPLE     
+SW-SUC-01-CORE  Vlan99 con IP de gestion 192.168.99.2 up/up         CUMPLE     
+SW-SUC-01-ACC1  hostname coincide con inventario                    CUMPLE     
+SW-SUC-01-ACC1  version IOS identificada                            CUMPLE     
+SW-SUC-01-ACC1  service password-encryption activo                  CUMPLE     
+SW-SUC-01-ACC1  enable secret (no password en claro)                CUMPLE     
+SW-SUC-01-ACC1  SSH version 2 habilitado                            NO CUMPLE  falta 'ip ssh version 2'
+SW-SUC-01-ACC1  VTY solo SSH (sin telnet)                           CUMPLE     
+SW-SUC-01-ACC1  VLAN 10 USUARIOS_VLAN10 activa                      CUMPLE     
+SW-SUC-01-ACC1  VLAN 20 USUARIOS_VLAN20 activa                      CUMPLE     
+SW-SUC-01-ACC1  VLAN 99 GESTION activa                              CUMPLE     
+SW-SUC-01-ACC1  troncales: nativa 99 y VLAN 10,20,99 permitidas     CUMPLE     
+SW-SUC-01-ACC1  Vlan99 con IP de gestion 192.168.99.3 up/up         CUMPLE     
+----------------------------------------------------------------------------------------------------
+R-SUC-01        10/10 condiciones cumplen
+SW-SUC-01-CORE  11/11 condiciones cumplen
+SW-SUC-01-ACC1  10/11 condiciones cumplen
+
+Resultado: CSV generado en evidencias/auditoria_flota.csv (32 filas)
+[codigo de salida: 0]
+
+$ python3 python/validar_inventario.py
+====================================================================================
+INTEGRACION DE FUENTES: YAML + IPAM(JSON) + evidencias Ansible
+====================================================================================
+Leyo: variables/sucursal_01.yml | datos/ipam_sucursal_01.json | evidencias/antes/*/show_running_config.txt
+
+COINCIDENCIAS (20)
+  [OK]    VLAN 10 nombre: USUARIOS_VLAN10  (YAML = IPAM)
+  [OK]    VLAN 10 red: 192.168.10.0/24  (YAML = IPAM)
+  [OK]    VLAN 10 gateway: 192.168.10.1  (YAML = IPAM)
+  [OK]    VLAN 10 gateway: 192.168.10.1  (YAML = router (running-config))
+  [OK]    VLAN 20 nombre: USUARIOS_VLAN20  (YAML = IPAM)
+  [OK]    VLAN 20 red: 192.168.20.0/24  (YAML = IPAM)
+  [OK]    VLAN 20 gateway: 192.168.20.1  (YAML = router (running-config))
+  [OK]    VLAN 99 nombre: GESTION  (YAML = IPAM)
+  [OK]    VLAN 99 red: 192.168.99.0/24  (YAML = IPAM)
+  [OK]    VLAN 99 gateway: 192.168.99.1  (YAML = IPAM)
+  [OK]    VLAN 99 gateway: 192.168.99.1  (YAML = router (running-config))
+  [OK]    R-SUC-01 nombre en respaldo: R-SUC-01  (inventario = running-config)
+  [OK]    R-SUC-01 IP gestion real: 192.168.99.1  (YAML = running-config)
+  [OK]    SW-SUC-01-CORE funcion: switch-core  (YAML = IPAM)
+  [OK]    SW-SUC-01-CORE gestion: 192.168.99.2  (YAML = IPAM)
+  [OK]    SW-SUC-01-CORE nombre en respaldo: SW-SUC-01-CORE  (inventario = running-config)
+  [OK]    SW-SUC-01-CORE IP gestion real: 192.168.99.2  (YAML = running-config)
+  [OK]    SW-SUC-01-ACC1 funcion: switch-acceso  (YAML = IPAM)
+  [OK]    SW-SUC-01-ACC1 nombre en respaldo: SW-SUC-01-ACC1  (inventario = running-config)
+  [OK]    SW-SUC-01-ACC1 IP gestion real: 192.168.99.3  (YAML = running-config)
+
+FALTANTES (2)
+  [FALTA] R-SUC-01 funcion: no existe en IPAM
+  [FALTA] R-SUC-01 gestion: no existe en IPAM
+
+DIFERENCIAS (2)
+  [DIFF]  VLAN 20 gateway: YAML=192.168.20.1 <> IPAM=192.168.20.254
+  [DIFF]  SW-SUC-01-ACC1 gestion: YAML=192.168.99.3 <> IPAM=192.168.99.30
+
+Resultado: 20 coincidencias, 2 faltantes, 2 diferencias.
+ACCION: corregir en la fuente que corresponda y repetir la validacion.
+[codigo de salida: 0]
+
+$ python3 python/medir_conectividad.py --simulado
+================================================================================================
+MEDICION DE CONECTIVIDAD DE GESTION (10 pruebas ICMP por destino)
+================================================================================================
+Leyo: variables/sucursal_01.yml | Condicion: perdida = 0% y latencia promedio <= 50 ms
+
+DESTINO         IP            ENV  REC  PERD%  MIN ms   PROM ms  MAX ms   RESULTADO
+R-SUC-01        192.168.99.1  10   10   0.0    1.68     2.10     3.99     CUMPLE
+SW-SUC-01-CORE  192.168.99.2  10   10   0.0    3.84     4.80     9.12     CUMPLE
+SW-SUC-01-ACC1  192.168.99.3  10   10   0.0    7.68     9.60     18.24    CUMPLE
+
+Resultado: evidencias/mediciones_conectividad.csv generado (2026-11-04 14:24:07).
+[codigo de salida: 0]
+

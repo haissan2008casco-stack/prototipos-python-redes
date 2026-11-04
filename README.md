@@ -13,15 +13,16 @@ Organizar cinco prototipos que apoyan tareas de operación de redes: validación
 
 ## Contenido
 
-- `python/`: programas de los cinco prototipos y funciones auxiliares.
-- `datos/`: entradas YAML y JSON.
-- `variables/`: diseño de la Sucursal 01 y salida de direccionamiento de la Sucursal 02.
-- `inventory/`: inventario de equipos para Ansible.
-- `playbooks/`: playbooks de recolección de estado y aplicación de un cambio documentado.
-- `evidencias/`: archivos de ejemplo y reportes CSV.
-- `documentacion/capturas/`: las 12 capturas originales aportadas para documentar el trabajo.
-- `documentacion/README.md`: guía técnica y pasos de ejecución.
-- `documentacion/ESTADO_Y_LIMITACIONES.md`: procedencia y alcance de las pruebas.
+- python/: programas de los cinco prototipos y funciones auxiliares.
+- datos/: entradas YAML y JSON.
+- variables/: archivos de configuración y direccionamiento.
+- inventario/: inventario de equipos.
+- manuales_de_jugadas/: archivos relacionados con los procedimientos de Ansible.
+- evidencias/: archivos de ejemplo y reportes.
+- resultados_prueba/: resultados de las pruebas.
+- documentación/capturas/: las 12 capturas originales del trabajo.
+- documentación/ESTADO_Y_LIMITACIONES.md: procedencia y alcance de las pruebas.
+- documentación/LEAME.md: documentación complementaria.
 
 ## Requisitos
 
